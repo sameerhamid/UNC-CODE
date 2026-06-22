@@ -7,7 +7,7 @@ const fs = require('fs/promises');
 (async () => {
     const commandFileHandler = await fs.open('./command.txt', 'r');
 
-    commandFileHandler.on('change', async() => {
+    commandFileHandler.on('change', async() => { // FileHandler extends EventEmmiter class so i can listen for events
         // get the size of the file
         const stat = await commandFileHandler.stat();
         // allocate our buffer with the size of the file
