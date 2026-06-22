@@ -20,7 +20,9 @@ const fs = require('fs/promises');
         const position = 0;
         // we want to read a file
         const content = await commandFileHandler.read(buff, offset, length, position);
-        console.log(content);
+        // decoder 01 => meaningful
+        // encoder meaningful => 01
+        console.log(buff.toString('utf-8'));
     })
 
     // const watcher = fs.watch('./');
