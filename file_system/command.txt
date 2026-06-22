@@ -1,5 +1,1 @@
-aabc
-def
-ghi
-
-ghi
+aabcdef
