@@ -7,23 +7,29 @@ const fs = require('fs/promises');
 (async () => {
     const commandFileHandler = await fs.open('./command.txt', 'r');
 
+    commandFileHandler.on('change', async() => {
+        // get the size of the file
+        const stat = await commandFileHandler.stat();
+        // allocate our buffer with the size of the file
+        const buff = Buffer.alloc(stat?.size);
+        // the location at which we want to start filling our buffer
+        const offset = 0;
+        // how many bytes we want to read
+        const length = buff.byteLength;
+        // from whcih postion we want to read the file
+        const position = 0;
+        // we want to read a file
+        const content = await commandFileHandler.read(buff, offset, length, position);
+        console.log(content);
+    })
+
     // const watcher = fs.watch('./');
     const watcher = fs.watch('./command.txt');
 
     for await (const event of watcher) {
         // if (event.eventType === "change" && event.filename === "command.txt") {
         if (event.eventType === "change") {
-            // the file was changed
-            console.log(`The ${event.filename} was changed`);
-            // get the size of the file
-            const stat = await commandFileHandler.stat()
-            const buff = Buffer.alloc(stat?.size);
-            const offset = 0;
-            const length = buff.byteLength;
-            const position = 0;
-            // we want to read a file
-            const content = await commandFileHandler.read(buff, offset, length, position);
-            console.log(content);
+            commandFileHandler.emit("change");
         }
     }
 })()
