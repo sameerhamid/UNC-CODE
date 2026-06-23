@@ -5,6 +5,31 @@ const fs = require('fs/promises');
 // then read/write
 
 (async () => {
+
+    async function createFile(path) {
+        if (!path && !path?.length) {
+            console.log("Please provide file path");
+            return;
+        }
+        try {
+            // check weather or not already have that file
+            const existingFileHandle = await fs.open(path, 'r');
+            if (existingFileHandle) {
+                // we already have that file...
+                existingFileHandle?.close();
+                return console.log(`The file ${path} already exists`)
+            }
+        } catch (error) {
+            // we don't have that file, now we should create it
+            const newFileHandle = await fs.open(path, 'w');
+            console.log("A new file was successfully created.");
+            newFileHandle?.close();
+        }
+
+    }
+
+
+    const CREATE_FILE = 'create a file'
     const commandFileHandler = await fs.open('./command.txt', 'r');
 
     commandFileHandler.on('change', async() => { // FileHandler extends EventEmmiter class so i can listen for events
@@ -22,7 +47,13 @@ const fs = require('fs/promises');
         const content = await commandFileHandler.read(buff, offset, length, position);
         // decoder 01 => meaningful
         // encoder meaningful => 01
-        console.log(buff.toString('utf-8'));
+        const command = buff.toString('utf-8');
+        // create a file:
+        // create a file <path>
+        if (command.toLowerCase().includes(CREATE_FILE)) {
+            const filePath = command.substring(CREATE_FILE.length + 1);
+            createFile(filePath);
+        }
     })
 
     // const watcher = fs.watch('./');
