@@ -25,11 +25,34 @@ const fs = require('fs/promises');
             console.log("A new file was successfully created.");
             newFileHandle?.close();
         }
+    }
+
+    async function deleteFile(path, newPath) {
+        if (!path && !path?.length) {
+            console.log("Please provide file path");
+            return;
+        }
+        try {
+            const existingFileHandle = await fs.open(path, 'r');
+            if (existingFileHandle) {
+                await fs.open()
+
+            }
+        } catch (error) {
+            console.log("File path does not exist");
+        }
+    }
+
+    const renameFile =  async(path) => {
 
     }
 
+    const addToFile =  async(path, content) => {}
 
-    const CREATE_FILE = 'create a file'
+    const CREATE_FILE = 'create a file';
+    const DELETE_FILE = 'delete the file';
+    const RENAME_FILE = 'rename the file';
+    const ADD_TO_FILE = 'add to the file';
     const commandFileHandler = await fs.open('./command.txt', 'r');
 
     commandFileHandler.on('change', async() => { // FileHandler extends EventEmmiter class so i can listen for events
@@ -48,11 +71,37 @@ const fs = require('fs/promises');
         // decoder 01 => meaningful
         // encoder meaningful => 01
         const command = buff.toString('utf-8');
+
         // create a file:
         // create a file <path>
         if (command.toLowerCase().includes(CREATE_FILE)) {
-            const filePath = command.substring(CREATE_FILE.length + 1);
+            const filePath = command.trim().substring(CREATE_FILE.length + 1);
             createFile(filePath);
+        }
+
+        // delete a file:
+        // delete the file <path>
+        if (command.toLowerCase().includes(DELETE_FILE)) {
+            const filePath = command.trim().substring(DELETE_FILE.length + 1);
+            deleteFile(filePath);
+        }
+
+        // rename file:
+        // rename file <path> to <new path>
+        if (command.toLowerCase().includes(RENAME_FILE)) {
+            const _idx = command.indexOf(" to ")
+            const oldPath = command.trim().substring(RENAME_FILE.length + 1, _idx);
+            const newpath = command.trim().substring(_idx + 4);
+            deleteFile(filePath);
+        }
+
+        // add to file
+        // add to file <path> content
+        if (command.toLowerCase().includes(ADD_TO_FILE)) {
+            const _idx = command.indexOf(" this content: ");
+            const filePath = command.trim().substring(ADD_TO_FILE.length + 1, _idx);
+            const content = command.trim().substring(_idx + 15);
+            addToFile(filePath, content);
         }
     })
 
