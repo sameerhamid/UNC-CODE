@@ -101,10 +101,10 @@ const fs = require('fs/promises');
         // add to file
         // add to file <path> content
         if (command.toLowerCase().includes(ADD_TO_FILE)) {
-            const _idx = command.indexOf(" with this content: ");
+            const _idx = command.indexOf(" with content: ");
             const filePath = command.trim().substring(ADD_TO_FILE.length + 1, _idx);
-            const content = command.trim().substring(_idx + 20);
-            addToFile(filePath, content);
+            const content = command.trim().substring(_idx + 15);
+            // addToFile(filePath, content);
         }
     })
 
