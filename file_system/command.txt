@@ -1,1 +1,1 @@
-create a file abc.txt
+rename the file def.txt to abc.txt
