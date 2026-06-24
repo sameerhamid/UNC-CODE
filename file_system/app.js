@@ -33,13 +33,13 @@ const fs = require('fs/promises');
             return;
         }
         try {
-            const existingFileHandle = await fs.open(path, 'r');
-            if (existingFileHandle) {
-                await fs.open()
-
-            }
+            await fs.unlink(path);
         } catch (error) {
-            console.log("File path does not exist");
+            if (error.code === 'ENOENT') {
+                console.log("No file at this path to remove.")
+            } else {
+                console.log("A error occured while removing the file: ", error)
+            }
         }
     }
 
@@ -85,7 +85,7 @@ const fs = require('fs/promises');
         // delete a file:
         // delete the file <path>
         if (command.toLowerCase().includes(DELETE_FILE)) {
-            const filePath = command.trim().substring(DELETE_FILE.length + 1);
+            const filePath = command.trim().substring(DELETE_FILE.length + 1).trim();
             deleteFile(filePath);
         }
 
@@ -95,7 +95,7 @@ const fs = require('fs/promises');
             const _idx = command.indexOf(" to ")
             const oldPath = command.trim().substring(RENAME_FILE.length + 1, _idx);
             const newpath = command.trim().substring(_idx + 4);
-            deleteFile(filePath);
+            renameFile(oldPath, newpath);
         }
 
         // add to file
@@ -104,7 +104,7 @@ const fs = require('fs/promises');
             const _idx = command.indexOf(" with content: ");
             const filePath = command.trim().substring(ADD_TO_FILE.length + 1, _idx);
             const content = command.trim().substring(_idx + 15);
-            // addToFile(filePath, content);
+            addToFile(filePath, content);
         }
     })
 
