@@ -1,1 +1,1 @@
-rename the file def.txt to abc.txt
+add to the file abc.txt with content: once there was a crow
