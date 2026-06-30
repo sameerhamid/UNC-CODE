@@ -70,12 +70,13 @@ const fs = require('fs/promises');
     // })
     // console.log(stream.writableHighWaterMark);
     // console.log(buff);
+    const numberOfWrites = 10000000;
     let i = 0;
     const writeMany = () => {
-        while (i < 1000000) {
+        while (i < numberOfWrites) {
             const buffer = Buffer.from(` ${i} `, 'utf8');
             // this is our last write
-            if (i === 999999) {
+            if (i === numberOfWrites - 1) {
                 return stream.end(buffer);
                 // stream.write(buffer); // errror
             }
