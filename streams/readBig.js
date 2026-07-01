@@ -9,13 +9,15 @@ const fs = require('fs/promises');
     const streamWrite =  fileHandleWrite.createWriteStream();
 
     streamRead.on('data', (chunk) => {
+        const numbers = chunk.toString('utf-8').split('  ');
+        console.log('number', number);
         if (!streamWrite.write(chunk)) {
             streamRead.pause();
         }
     });
 
     streamWrite.on('drain', () => {
-        streamRead.on('resume');
+        streamRead.resume();
     })
 
 })()
