@@ -56,6 +56,25 @@ function* fun4() {
 }
 
 
-for(let val of fun4()) {
-    console.log('value>>>>', val)
+// for(let val of fun4()) {
+//     console.log('value>>>>', val)
+// }
+
+function* fun5() {
+    let count = 0;
+    while(true) {
+        yield count;
+        count++;
+    }
+    console.log("count>>>>>>>>>>>", count);
 }
+
+
+const fun5Call = fun5();
+
+console.log(fun5Call.next().value);
+console.log(fun5Call.next().value);
+console.log(fun5Call.next().value);
+console.log(fun5Call.next().value);
+console.log(fun5Call.next().value);
+console.log(fun5Call.next().value);
